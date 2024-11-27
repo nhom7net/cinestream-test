@@ -44,7 +44,7 @@ public class test_dangKy {
       Assert.assertTrue(buttonDangKy.isDisplayed(), "Ô đăng ký không hiển thị.");
       Thread.sleep(2000);
   }
-  /*
+  
   @Test(priority = 2)
   public void testcase_id_002_emptyFields() throws InterruptedException {
       // Nhấn nút "Đăng ký" mà không nhập thông tin
@@ -209,8 +209,11 @@ public class test_dangKy {
       } catch (AssertionError e) {
           System.err.println("Đăng nhập thất bại: " + e.getMessage());
       }
+      WebElement tabb = driver.findElement(By.xpath("//a[contains(text(),'Đăng xuất')]"));
+	  tabb.click();
+	  driver.findElement(By.cssSelector("a[href='/auth']")).click();
   }
- */
+ 
   @Test(priority = 7)
   public void testcase_id_007_check_button_watch_movies() throws InterruptedException {
 	  WebElement button = driver.findElement(By.xpath("//a[contains(text(),'Xem ngay tại CineStream')]"));
