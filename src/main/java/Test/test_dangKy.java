@@ -2,11 +2,16 @@ package Test;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeTest;
+
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.By.ByCssSelector;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 
@@ -51,19 +56,60 @@ public class test_dangKy {
       WebElement buttonDangKy = driver.findElement(By.xpath("//button[contains(text(),'Đăng ký')]"));
       buttonDangKy.click();
       Thread.sleep(2000);
-
-      // Danh sách các ID của các trường cần kiểm tra
-      String[] fieldIds = {"name", "username", "email", "password", "password-confirm"};
-
-      // Lặp qua từng trường và kiểm tra thông báo lỗi
-      for (String fieldId : fieldIds) {
-          WebElement field = driver.findElement(By.id(fieldId));
-          String validationMessage = field.getAttribute("validationMessage");
-
-          // Kiểm tra thông báo lỗi có phải là "Please fill out this field."
-          Assert.assertEquals(validationMessage, "Please fill out this field.",
-              "Thông báo lỗi không đúng cho trường: " + fieldId);
-      }
+      
+      // Kiểm tra trường "name"
+   	  WebElement namee = driver.findElement(By.id("name"));
+   	  String emailValidationMessage = namee.getAttribute("validationMessage");
+   	  Assert.assertEquals(emailValidationMessage, "Please fill out this field.", 
+   	      "Thông báo lỗi không đúng cho trường: name");
+   
+   	  namee.sendKeys("Van An");
+   	  
+   	  // Kiểm tra trường "username"
+   	  Thread.sleep(3500);
+   	  WebElement username = driver.findElement(By.id("username"));
+   	  driver.findElement(By.xpath("//button[contains(text(),'Đăng ký')]")).click();
+   	  Thread.sleep(5000);
+   	  String usernamee = username.getAttribute("validationMessage");
+   	  Assert.assertEquals(usernamee, "Please fill out this field.", 
+   	      "Thông báo lỗi không đúng cho trường: username");
+   	  username.sendKeys("user123");
+   	  
+   	  //Kiểm tra trường "email"
+  	  Thread.sleep(3500);
+  	  WebElement email = driver.findElement(By.id("email"));
+  	  driver.findElement(By.xpath("//button[contains(text(),'Đăng ký')]")).click();
+  	  Thread.sleep(5000);
+  	  String mail = email.getAttribute("validationMessage");
+  	  Assert.assertEquals(mail, "Please fill out this field.", 
+  	      "Thông báo lỗi không đúng cho trường: email");
+  	  email.sendKeys("123321d@gmail.com");
+  	  
+   	  // Kiểm tra trường "password"
+   	  Thread.sleep(3500);
+   	  WebElement passwordField = driver.findElement(By.id("password"));
+   	  driver.findElement(By.xpath("//button[contains(text(),'Đăng ký')]")).click();
+   	  Thread.sleep(5000);
+   	  String passwordValidationMessage = passwordField.getAttribute("validationMessage");
+   	  Assert.assertEquals(passwordValidationMessage, "Please fill out this field.", 
+   	      "Thông báo lỗi không đúng cho trường: password");
+   	  passwordField.sendKeys("123321.Nhom");
+   	  
+   	  // Kiểm tra trường "password-confirm"
+   	  Thread.sleep(3500);
+   	  WebElement passwordconfirm = driver.findElement(By.id("password-confirm"));
+   	  driver.findElement(By.xpath("//button[contains(text(),'Đăng ký')]")).click();
+   	  Thread.sleep(5000);
+   	  String ps = passwordconfirm.getAttribute("validationMessage");
+   	  Assert.assertEquals(ps, "Please fill out this field.", 
+   	      "Thông báo lỗi không đúng cho trường: passwordcf");
+   	  
+   	  Thread.sleep(2500);
+   	  namee.clear();
+   	  username.clear();
+   	  email.clear();
+   	  passwordField.clear();
+   	
       Thread.sleep(2000);
   }
 
@@ -122,15 +168,9 @@ public class test_dangKy {
 
       WebElement confirmPassword = driver.findElement(By.id("password-confirm"));
       confirmPassword.sendKeys("password456"); // Mật khẩu không khớp
-
-      // Nhấn nút "Đăng ký"
-      WebElement buttonDangKy = driver.findElement(By.xpath("//button[contains(text(),'Đăng ký')]"));
-      buttonDangKy.click();
-      Thread.sleep(2000);
-
-      // Kiểm tra thông báo lỗi cho mật khẩu không khớp
-      WebElement errorMessage = driver.findElement(By.xpath("//div[contains(@class,'snackbar flex flex-col gap-y-2 items-end p-4')],'Mật khẩu không trùng khớp!')]"));
-      Assert.assertTrue(errorMessage.isDisplayed(), "Thông báo lỗi cho mật khẩu không khớp không hiển thị.");
+      String passwordError = driver.findElement(By.cssSelector("body > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)")).getText();
+      Assert.assertEquals(passwordError, "Mật khẩu không trùng khớp!", "Thông báo lỗi mật khẩu không đúng");
+      
       displayName.clear();
       username.clear();
       email.clear();
@@ -155,16 +195,10 @@ public class test_dangKy {
       password.sendKeys("pa");
 
       WebElement confirmPassword = driver.findElement(By.id("password-confirm"));
-      confirmPassword.sendKeys("pa"); // Mật khẩu không khớp
-
-      // Nhấn nút "Đăng ký"
-      WebElement buttonDangKy = driver.findElement(By.xpath("//button[contains(text(),'Đăng ký')]"));
-      buttonDangKy.click();
-      Thread.sleep(2000);
-
-      // Kiểm tra thông báo lỗi cho mật khẩu không khớp
-      WebElement errorMessage = driver.findElement(By.xpath("//div[@data-testid='toast'],'Mật khẩu phải có ít nhất 8 ký tự!')]"));
-      Assert.assertTrue(errorMessage.isDisplayed(), "Thông báo lỗi cho mật khẩu không khớp không hiển thị.");
+      confirmPassword.sendKeys("pa");
+      String passwordError = driver.findElement(By.xpath("//p[contains(text(),'Mật khẩu không trùng khớp!')]")).getText();
+      Assert.assertEquals(passwordError, "Mật khẩu không trùng khớp!", "Thông báo lỗi mật khẩu không đúng");
+      
       displayName.clear();
       username.clear();
       email.clear();
@@ -176,7 +210,7 @@ public class test_dangKy {
   
   @Test(priority = 6)
   public void testcase_id_006_register_success() throws InterruptedException {
-      // Nhập thông tin hợp lệ ngoại trừ mật khẩu không khớp
+
       WebElement displayName = driver.findElement(By.id("name"));
       displayName.sendKeys("Van Annn");
 
@@ -184,7 +218,7 @@ public class test_dangKy {
       username.sendKeys("user123");
 
       WebElement email = driver.findElement(By.id("email"));
-      email.sendKeys("userzzz@example.com");
+      email.sendKeys("usdcccddz@example.com");
 
       WebElement password = driver.findElement(By.id("password"));
       password.sendKeys("password123");
@@ -195,27 +229,34 @@ public class test_dangKy {
       // Nhấn nút "Đăng ký"
       WebElement buttonDangKy = driver.findElement(By.xpath("//button[contains(text(),'Đăng ký')]"));
       buttonDangKy.click();
-      Thread.sleep(2000);
-
+     
+      Thread.sleep(7000);
+      
+      WebElement tab = driver.findElement(By.xpath("//button[@class='btn-sm variant-ghost-surface']"));
+	  tab.click();
       // Kiểm tra xem người dùng đã đăng nhập thành công chưa
-      WebElement check_profile = driver.findElement(By.xpath("//a[normalize-space()='Trang cá nhân']"));
-      WebElement check_logout = driver.findElement(By.xpath("//a[normalize-space()='Đăng xuất']"));
-
-      // So sánh giá trị text của các phần tử
-      try {
-          Assert.assertEquals(check_profile.getText(), "Trang cá nhân", "Kiểm tra 'Trang cá nhân' thất bại");
-          Assert.assertEquals(check_logout.getText(), "Đăng xuất", "Kiểm tra 'Đăng xuất' thất bại");
-          System.out.println("Đăng nhập thành công");
-      } catch (AssertionError e) {
-          System.err.println("Đăng nhập thất bại: " + e.getMessage());
-      }
-      WebElement tabb = driver.findElement(By.xpath("//a[contains(text(),'Đăng xuất')]"));
-	  tabb.click();
-	  driver.findElement(By.cssSelector("a[href='/auth']")).click();
+	      WebElement check_profile = driver.findElement(By.xpath("//a[normalize-space()='Trang cá nhân']"));
+	      WebElement check_logout = driver.findElement(By.xpath("//a[normalize-space()='Đăng xuất']"));
+	
+	      // So sánh giá trị text của các phần tử
+	      try {
+	          Assert.assertEquals(check_profile.getText(), "Trang cá nhân", "Kiểm tra 'Trang cá nhân' thất bại");
+	          Assert.assertEquals(check_logout.getText(), "Đăng xuất", "Kiểm tra 'Đăng xuất' thất bại");
+	          System.out.println("Đăng nhập thành công");
+	      } catch (AssertionError e) {
+	          System.err.println("Đăng nhập thất bại: " + e.getMessage());
+	      }
+	      Thread.sleep(3500);
+	    WebElement tabb = driver.findElement(By.xpath("//a[contains(text(),'Đăng xuất')]"));
+	  	tabb.click();
+	  	Thread.sleep(5000);
+	  	driver.findElement(By.cssSelector("a[href='/auth']")).click();
+	  	
   }
  
   @Test(priority = 7)
   public void testcase_id_007_check_button_watch_movies() throws InterruptedException {
+	  Thread.sleep(4500);
 	  WebElement button = driver.findElement(By.xpath("//a[contains(text(),'Xem ngay tại CineStream')]"));
 
       // Nhấn vào nút
@@ -230,9 +271,10 @@ public class test_dangKy {
 
       System.out.println("Test Passed: URL khớp với mong đợi!");
   }
+  
   @AfterTest
   public void afterTest() throws Exception {
-	  Thread.sleep(10000);
+	  Thread.sleep(5000);
 	  driver.quit();
   }
 

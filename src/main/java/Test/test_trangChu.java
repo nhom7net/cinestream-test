@@ -13,6 +13,19 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.NoSuchElementException;
+import java.util.Set;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
 /*1. Mở trang web 
 2. Kiểm tra header
 3. Kiểm tra nút tìm kiếm có hiển thị không
@@ -36,7 +49,7 @@ public class test_trangChu {
 	public WebDriver driver = null;
   @BeforeTest
   public void beforeTest() {
-	  System.setProperty("webdriver.chrome.driver", "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
+	  
 	  driver = new ChromeDriver();
       driver.get("https://cinestream-livid.vercel.app");
       driver.manage().window().maximize();
@@ -272,5 +285,6 @@ public class test_trangChu {
 	  Thread.sleep(10000);
 	 // driver.quit();
   }
-}
 
+
+}
